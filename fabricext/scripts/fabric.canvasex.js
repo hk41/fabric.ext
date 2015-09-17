@@ -1,4 +1,4 @@
-﻿ /////////////////////////////////////////////////////
+﻿/////////////////////////////////////////////////////
 // fabric.canvasex.js
 //
 // Author: Jim Ma (https://github.com/mazong1123)
@@ -121,11 +121,30 @@
                     self._onDoubleTap(e);
                 } else {
                     self.lastTouch = now;
+                    self._onSingleTap(e);
                 }
 
                 return;
             }
         },
+
+        _onSingleTap: function (e) {
+
+            var self = this;
+
+            var target = self.findTarget(e);
+            self.fire('touch:singleTap', {
+                target: target,
+                e: e
+            });
+
+            if (target && !self.isDrawingMode) {
+                // To unify the behavior, the object's double tap event does not fire on drawing mode.
+                target.fire('object:singleTap', {
+                    e: e
+                });
+            }
+				},
 
         _onDoubleTap: function (e) {
             var self = this;
